@@ -19,6 +19,13 @@ class MicropostsInterfaceTest < ActionDispatch::IntegrationTest
     assert_select 'a[href=?]', '/?page=2'
 
     # Valid submission
+    content = "This micropost really ties the room together"
+    assert_difference 'Micropost.count' do
+      post microposts_path, params: { micropost: { content: content }}
+    end
+    assert_redirected_to root_url
+    follow_redirect!
+    assert_match content, response.body
 
   end
   # test "the truth" do
