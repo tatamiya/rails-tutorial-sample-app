@@ -85,6 +85,21 @@ class User < ApplicationRecord
         Micropost.where("user_id = ?", id)
     end
 
+    # Follows a user.
+    def follow(other_user)
+        following << other_user unless self == other_user
+    end
+
+    # Unfollow a user.
+    def unfollow(other_user)
+        following.delete(other_user)
+    end
+
+    # Returns true if the current user is following the other user.
+    def following?(other_user)
+        following.include?(other_user)
+    end
+
     private
         # Conterts email to all lowercase.
         def downcase_email
